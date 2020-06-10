@@ -6,10 +6,13 @@ var allPlayers;
 var distance = 0;
 var database;
 
+var hurdle1, hurdle2,hurdle3,hurdle4;
+var hurdle1image,hurdle2image,hurdle3image,hurdle4image;
+
 var form, player, game;
 
 var players, player1, player2,player3,player4;
-var player1image,player2,player3,player4,groundimage, trackimage;
+var player1image,player2image,player3image,player4image,groundimage, trackimage;
 
 function preload(){
 player1image=loadImage("images/player1.png")
@@ -21,6 +24,7 @@ trackimage=loadImage("images/track.png")
 }
 function setup(){
   canvas = createCanvas(displayWidth - 20, displayHeight-30);
+  hurdleGroup = new Group();
   database = firebase.database();
   game = new Game();
   game.getState();
@@ -57,6 +61,41 @@ function draw(){
 if (gameState===2) {
   game.end()
 }
-
+spawnhurdles()
 }
 
+function spawnhurdles() {
+  if(frameCount % 60 === 0) {
+    var hurdle = createSprite(600,165,10,40);
+    hurdle.velocityX = -(6+3*score/100);
+    
+    //generate random obstacles
+    var rand = Math.round(random(1,6));
+    switch(rand) {
+      case 1: hurdle.addImage(hurdlee1);
+              break;
+      case 2: hurdle.addImage(hurdle2);
+              break;
+      case 3: hurdle.addImage(hurdle3);
+              break;
+              case 4: hurdle.addImage(hurdle4);
+              break;        
+              case 5: hurdle.addImage(hurdle5);
+              break;
+              case 6: hurdle.addImage(hurdle6);
+              break;
+              default: break;
+      
+    }
+    
+    //assign scale and lifetime to the obstacle           
+    obstacle.scale = 0.5;
+    obstacle.lifetime = 300;
+    //add each obstacle to the group
+    obstaclesGroup.add(obstacle);
+  }
+}
+hurdle.scale = 0.5;
+    hurdlee.lifetime = 300;
+    //add each obstacle to the group
+    hurdlesGroup.add(hurdle);
